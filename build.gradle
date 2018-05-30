@@ -8,9 +8,9 @@ project.ext {
     version_readable = "4.0." + version_code + "." + (System.getenv("aware_label") as String ?: "selfie")
     compile_sdk = (System.getenv("compile_sdk") as Integer ?: 26)
     target_sdk = (System.getenv("target_sdk") as Integer ?: 25) //version 26 breaks system broadcasts like package installed used for detecting a plugin installed :-(
-    minimum_sdk = (System.getenv("minimum_sdk") as Integer ?: 14) //Android 4.0+
+    minimum_sdk = (System.getenv("minimum_sdk") as Integer ?: 19) //Android 4.0+ / was 14
     build_tools = (System.getenv("build_tools") ?: "26.0.2")
-    aware_libs = (System.getenv("aware_libs") as String ?: "development-SNAPSHOT")
+    aware_libs = (System.getenv("aware_libs") as String ?: "master-SNAPSHOT")
 }
 
 buildscript {
@@ -23,7 +23,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc2'
+        classpath 'com.android.tools.build:gradle:3.1.2'
     }
 }
 
