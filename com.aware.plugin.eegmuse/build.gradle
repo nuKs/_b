@@ -57,5 +57,6 @@ dependencies {
     implementation "com.android.support:gridlayout-v7:$support_libs"
 
     api "com.github.denzilferreira:aware-client:$aware_libs"
-    implementation files('libs/libmuse_android.jar') // @new
+    // implementation files('libs/libmuse_android.jar') // @new
+    implementation fileTree(include: ['*.jar'], dir: 'libs') // use fileTree instead of files so we can exclude duplicate transitive dependencies in project dependending on this one
 }
