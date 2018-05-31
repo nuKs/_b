@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+// apply plugin: 'com.android.library' // ? was in the other
 
 android {
     compileSdkVersion compile_sdk
@@ -41,6 +42,7 @@ if (System.getenv("storeFile") != null && System.getenv("storePassword") != null
 
 repositories {
     maven { url 'https://jitpack.io' } //this allows library generation directly from GitHub source-code
+    flatDir { dirs 'libs' } // @new
 }
 
 configurations.all {
@@ -55,5 +57,5 @@ dependencies {
     implementation "com.android.support:gridlayout-v7:$support_libs"
 
     api "com.github.denzilferreira:aware-client:$aware_libs"
-
+    implementation files('libs/libmuse_android.jar') // @new
 }
