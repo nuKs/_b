@@ -9,6 +9,8 @@ android {
         targetSdkVersion target_sdk
         versionCode version_code
         versionName version_readable
+        
+        resValue "string", "provider_eegmuse", "com.aware.plugin.eegmuse.provider.gar"
     }
 
     signingConfigs {
@@ -25,6 +27,14 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+    sourceSets {
+        main {
+            java.srcDirs += '../com.aware.plugin.eegmuse/src/main/java'
+            res.srcDirs += '../com.aware.plugin.eegmuse/src/main/res'
+            manifest.srcFile '../com.aware.plugin.eegmuse/src/main/AndroidManifest.xml'
+            jniLibs.srcFile '../com.aware.plugin.eegmuse/src/main/jniLibs'
+        }
     }
 }
 
@@ -70,7 +80,7 @@ configurations.all {
 
 dependencies {
     implementation "com.android.support:appcompat-v7:${support_libs}"
-    implementation "com.github.denzilferreira:aware-client:$aware_libs"
+    api "com.github.denzilferreira:aware-client:$aware_libs"
     implementation "com.android.support:appcompat-v7:$support_libs"
     implementation "com.android.support:gridlayout-v7:$support_libs"
     implementation files('libs/libmuse_android.jar') // @new
