@@ -73,4 +73,5 @@ dependencies {
     implementation "com.github.denzilferreira:aware-client:$aware_libs"
     implementation "com.android.support:appcompat-v7:$support_libs"
     implementation "com.android.support:gridlayout-v7:$support_libs"
+    implementation files('libs/libmuse_android.jar') // @new
 }
