@@ -1,2 +1,2 @@
-include ':com.aware.plugin.template'
-//, ':com.aware.plugin.template.lib'
+include ':com.aware.plugin.eegmuse'
+//, ':com.aware.plugin.com.aware.plugin.eegmuse.lib'

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.aware.plugin.template">
+    package="com.aware.plugin.eegmuse">
 
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <application
@@ -12,17 +12,17 @@
         <!-- Use a hardcoded label string on the service
         to keep the name of the original plugin if added as a library to another -->
         <service
-            android:name="com.aware.plugin.template.Plugin"
+            android:name="com.aware.plugin.com.aware.plugin.eegmuse.Plugin"
             android:exported="true"
             android:label="AWARE: Plugin Template" />
 
         <activity
-            android:name="com.aware.plugin.template.Settings"
+            android:name="com.aware.plugin.com.aware.plugin.eegmuse.Settings"
             android:exported="true" />
 
         <!-- Keep the ${applicationId} so there are no conflicts when merging this plugin as a library for reuse. Update the plugin_template string in values -->
         <provider
-            android:name="com.aware.plugin.template.Provider"
+            android:name="com.aware.plugin.com.aware.plugin.eegmuse.Provider"
             android:authorities="${applicationId}.provider.xxx"
             android:exported="true"
             android:label="@string/plugin_template"
@@ -30,7 +30,7 @@
             android:writePermission="com.aware.WRITE_CONTEXT_DATA" />
 
         <service
-            android:name="com.aware.plugin.template.syncadapters.Template_Sync"
+            android:name="com.aware.plugin.com.aware.plugin.eegmuse.syncadapters.Template_Sync"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />

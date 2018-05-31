@@ -6,7 +6,7 @@ android {
     buildToolsVersion build_tools
 
     defaultConfig {
-        applicationId "com.aware.plugin.template" //EDIT ME
+        applicationId "com.aware.plugin.com.aware.plugin.eegmuse" //EDIT ME
         minSdkVersion minimum_sdk
         targetSdkVersion target_sdk
         versionCode version_code

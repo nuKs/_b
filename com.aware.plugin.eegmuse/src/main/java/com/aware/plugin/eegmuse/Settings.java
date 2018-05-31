@@ -1,4 +1,4 @@
-package com.aware.plugin.template;
+package com.aware.plugin.eegmuse;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,9 +44,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             status.setChecked(sharedPreferences.getBoolean(key, false));
         }
         if (Aware.getSetting(this, STATUS_PLUGIN_TEMPLATE).equals("true")) {
-            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.template");
+            Aware.startPlugin(getApplicationContext(), "com.aware.plugin.com.aware.plugin.eegmuse");
         } else {
-            Aware.stopPlugin(getApplicationContext(), "com.aware.plugin.template");
+            Aware.stopPlugin(getApplicationContext(), "com.aware.plugin.com.aware.plugin.eegmuse");
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.aware.plugin.template;
+package com.aware.plugin.eegmuse;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
