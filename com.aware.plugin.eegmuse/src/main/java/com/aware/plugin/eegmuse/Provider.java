@@ -22,17 +22,19 @@ import java.util.HashMap;
 
 public class Provider extends ContentProvider {
 
-    public static String AUTHORITY = "com.aware.plugin.com.aware.plugin.eegmuse.provider.xxx"; //change to package.provider.your_plugin_name
+    // content://com.aware.plugin.eegmuse.provider.eegmuse/eegmuse
+
+    public static String AUTHORITY = "com.aware.plugin.eegmuse.provider.eegmuse"; //change to package.provider.your_plugin_name
 
     public static final int DATABASE_VERSION = 1; //increase this if you make changes to the database structure, i.e., rename columns, etc.
-    public static final String DATABASE_NAME = "plugin_template.db"; //the database filename, use plugin_xxx for plugins.
+    public static final String DATABASE_NAME = "plugin_eegmuse"; //the database filename, use plugin_xxx for plugins.
 
     //Add here your database table names, as many as you need
-    public static final String DB_TBL_TEMPLATE = "table_one";
+    public static final String DB_TBL_TEMPLATE = "eegmuse";
 
     //For each table, add two indexes: DIR and ITEM. The index needs to always increment. Next one is 3, and so on.
-    private static final int TABLE_ONE_DIR = 1;
-    private static final int TABLE_ONE_ITEM = 2;
+    private static final int EEG_MUSE_DIR = 1;
+    private static final int EEG_MUSE_ITEM = 2;
 
     //Put tables names in this array so AWARE knows what you have on the database
     public static final String[] DATABASE_TABLES = {
@@ -50,25 +52,31 @@ public class Provider extends ContentProvider {
      * Create one of these per database table
      * In this example, we are adding example columns
      */
-    public static final class TableOne_Data implements AWAREColumns {
+    public static final class EEGMuse_Data implements AWAREColumns {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DB_TBL_TEMPLATE);
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.aware.plugin.com.aware.plugin.eegmuse.provider.table_one"; //modify me
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.aware.plugin.com.aware.plugin.eegmuse.provider.table_one"; //modify me
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.aware.plugin.eegmuse.provider.eegmuse"; //modify me
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.aware.plugin.eegmuse.provider.eegmuse"; //modify me
 
         //Note: integers and strings don't need a type prefix_
-        public static final String NAME = "name";
-        public static final String BIG_NUMBER = "double_big_number"; //a double_ prefix makes a MySQL DOUBLE column
-        public static final String PICTURE = "blob_picture"; //a blob_ prefix makes a MySQL BLOB column
+        // public static final String NAME = "name";
+        public static final String EEG1 = "double_eeg1"; //a double_ prefix makes a MySQL DOUBLE column
+        public static final String EEG2 = "double_eeg2"; //a double_ prefix makes a MySQL DOUBLE column
+        public static final String EEG3 = "double_eeg3"; //a double_ prefix makes a MySQL DOUBLE column
+        public static final String EEG4 = "double_eeg4"; //a double_ prefix makes a MySQL DOUBLE column
+        //public static final String PICTURE = "blob_picture"; //a blob_ prefix makes a MySQL BLOB column
     }
 
     //Define each database table fields
     private static final String DB_TBL_TEMPLATE_FIELDS =
-        TableOne_Data._ID + " integer primary key autoincrement," +
-        TableOne_Data.TIMESTAMP + " real default 0," +
-        TableOne_Data.DEVICE_ID + " text default ''," +
-        TableOne_Data.NAME + " text default ''," +
-        TableOne_Data.BIG_NUMBER + " real default 0," +
-        TableOne_Data.PICTURE + " blob default null";
+        EEGMuse_Data._ID + " integer primary key autoincrement," +
+        EEGMuse_Data.TIMESTAMP + " integer default 0," + // 8bit -- @warning may causes issue on update
+        EEGMuse_Data.DEVICE_ID + " text default ''," +
+        // EEGMuse_Data.NAME + " text default ''," +
+        EEGMuse_Data.EEG1 + " real default 0," +
+        EEGMuse_Data.EEG2 + " real default 0," +
+        EEGMuse_Data.EEG3 + " real default 0," +
+        EEGMuse_Data.EEG4 + " real default 0";
+        // EEGMuse_Data.PICTURE + " blob default null";
 
     /**
      * Share the fields with AWARE so we can replicate the table schema on the server
@@ -90,14 +98,14 @@ public class Provider extends ContentProvider {
     //--
 
     //For each table, create a hashmap needed for database queries
-    private HashMap<String, String> tableOneHash;
+    private HashMap<String, String> eegMuseHash;
 
     /**
      * Returns the provider authority that is dynamic
      * @return
      */
     public static String getAuthority(Context context) {
-        AUTHORITY = context.getPackageName() + ".provider.xxx";
+        AUTHORITY = context.getPackageName() + ".provider.eegmuse";
         return AUTHORITY;
     }
 
@@ -109,17 +117,20 @@ public class Provider extends ContentProvider {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         //For each table, add indexes DIR and ITEM
-        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0], TABLE_ONE_DIR);
-        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0] + "/#", TABLE_ONE_ITEM);
+        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0], EEG_MUSE_DIR);
+        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0] + "/#", EEG_MUSE_ITEM);
 
         //Create each table hashmap so Android knows how to insert data to the database. Put ALL table fields.
-        tableOneHash = new HashMap<>();
-        tableOneHash.put(TableOne_Data._ID, TableOne_Data._ID);
-        tableOneHash.put(TableOne_Data.TIMESTAMP, TableOne_Data.TIMESTAMP);
-        tableOneHash.put(TableOne_Data.DEVICE_ID, TableOne_Data.DEVICE_ID);
-        tableOneHash.put(TableOne_Data.NAME, TableOne_Data.NAME);
-        tableOneHash.put(TableOne_Data.BIG_NUMBER, TableOne_Data.BIG_NUMBER);
-        tableOneHash.put(TableOne_Data.PICTURE, TableOne_Data.PICTURE);
+        eegMuseHash = new HashMap<>();
+        eegMuseHash.put(EEGMuse_Data._ID, EEGMuse_Data._ID);
+        eegMuseHash.put(EEGMuse_Data.TIMESTAMP, EEGMuse_Data.TIMESTAMP);
+        eegMuseHash.put(EEGMuse_Data.DEVICE_ID, EEGMuse_Data.DEVICE_ID);
+        //eegMuseHash.put(EEGMuse_Data.NAME, EEGMuse_Data.NAME);
+        eegMuseHash.put(EEGMuse_Data.EEG1, EEGMuse_Data.EEG1);
+        eegMuseHash.put(EEGMuse_Data.EEG2, EEGMuse_Data.EEG2);
+        eegMuseHash.put(EEGMuse_Data.EEG3, EEGMuse_Data.EEG3);
+        eegMuseHash.put(EEGMuse_Data.EEG4, EEGMuse_Data.EEG4);
+        //eegMuseHash.put(EEGMuse_Data.PICTURE, EEGMuse_Data.PICTURE);
 
         return true;
     }
@@ -134,7 +145,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table DIR case, increasing the index accordingly
-            case TABLE_ONE_DIR:
+            case EEG_MUSE_DIR:
                 count = database.delete(DATABASE_TABLES[0], selection, selectionArgs);
                 break;
 
@@ -163,12 +174,12 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table DIR case
-            case TABLE_ONE_DIR:
-                long _id = database.insert(DATABASE_TABLES[0], TableOne_Data.DEVICE_ID, values);
+            case EEG_MUSE_DIR:
+                long _id = database.insert(DATABASE_TABLES[0], EEGMuse_Data.DEVICE_ID, values);
                 database.setTransactionSuccessful();
                 database.endTransaction();
                 if (_id > 0) {
-                    Uri dataUri = ContentUris.withAppendedId(TableOne_Data.CONTENT_URI, _id);
+                    Uri dataUri = ContentUris.withAppendedId(EEGMuse_Data.CONTENT_URI, _id);
                     getContext().getContentResolver().notifyChange(dataUri, null);
                     return dataUri;
                 }
@@ -190,9 +201,9 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add all tables' DIR entries, with the right table index
-            case TABLE_ONE_DIR:
+            case EEG_MUSE_DIR:
                 qb.setTables(DATABASE_TABLES[0]);
-                qb.setProjectionMap(tableOneHash); //the hashmap of the table
+                qb.setProjectionMap(eegMuseHash); //the hashmap of the table
                 break;
 
             default:
@@ -218,10 +229,10 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table indexes DIR and ITEM
-            case TABLE_ONE_DIR:
-                return TableOne_Data.CONTENT_TYPE;
-            case TABLE_ONE_ITEM:
-                return TableOne_Data.CONTENT_ITEM_TYPE;
+            case EEG_MUSE_DIR:
+                return EEGMuse_Data.CONTENT_TYPE;
+            case EEG_MUSE_ITEM:
+                return EEGMuse_Data.CONTENT_ITEM_TYPE;
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
@@ -239,7 +250,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table DIR case
-            case TABLE_ONE_DIR:
+            case EEG_MUSE_DIR:
                 count = database.update(DATABASE_TABLES[0], values, selection, selectionArgs);
                 break;
 
