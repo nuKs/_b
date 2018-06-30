@@ -19,8 +19,29 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import android.os.Binder;
+import android.os.IBinder;
 
 public class Plugin extends Aware_Plugin {
+
+    // Binder given to clients
+    private final IBinder mBinder = new LocalBinder();
+
+    /**
+     * Class used for the client Binder. Because we know this service always runs in
+     * the same process as its clients, we don't need to deal with IPC.
+     */
+    public class LocalBinder extends Binder {
+        Plugin getService() {
+            // Return this instance of Plugin so clients can call public methods
+            return Plugin.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
 
     /**
      * Tag used for logging purposes.
