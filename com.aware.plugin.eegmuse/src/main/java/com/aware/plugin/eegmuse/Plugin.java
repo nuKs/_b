@@ -50,7 +50,7 @@ public class Plugin extends Aware_Plugin {
 
     /**
      * The MuseManager is how you detect Muse headbands and receive notifications
-     * when the list of available headbands changes.
+     * when the list of  available headbands changes.
      */
     private MuseManagerAndroid manager;
 
@@ -171,46 +171,10 @@ public class Plugin extends Aware_Plugin {
         super.onStartCommand(intent, flags, startId);
 
         if (PERMISSIONS_OK) {
-
             DEBUG = Aware.getSetting(this, Aware_Preferences.DEBUG_FLAG).equals("true");
 
             //Initialize our plugin's settings
             Aware.setSetting(this, Settings.STATUS_PLUGIN_EEGMUSE, true);
-
-            /**
-             * Example of how to enable accelerometer sensing and how to access the data in real-time for your app.
-             * In this particular case, we are sending a broadcast that the ContextCard listens to and updates the UI in real-time.
-             */
-            Aware.startAccelerometer(this);
-            Accelerometer.setSensorObserver(new Accelerometer.AWARESensorObserver() {
-                @Override
-                public void onAccelerometerChanged(ContentValues contentValues) {
-                    sendBroadcast(new Intent("ACCELEROMETER_DATA").putExtra("data", contentValues));
-                }
-            });
-
-            Aware.startScreen(this);
-            Screen.setSensorObserver(new Screen.AWARESensorObserver() {
-                @Override
-                public void onScreenOn() {
-
-                }
-
-                @Override
-                public void onScreenOff() {
-
-                }
-
-                @Override
-                public void onScreenLocked() {
-
-                }
-
-                @Override
-                public void onScreenUnlocked() {
-
-                }
-            });
 
             //Enable our plugin's sync-adapter to upload the data to the server if part of a study
             if (Aware.getSetting(this, Aware_Preferences.FREQUENCY_WEBSERVICE).length() >= 0 && !Aware.isSyncEnabled(this, Provider.getAuthority(this)) && Aware.isStudy(this) && getApplicationContext().getPackageName().equalsIgnoreCase("com.aware.phone") || getApplicationContext().getResources().getBoolean(R.bool.standalone)) {
@@ -226,13 +190,24 @@ public class Plugin extends Aware_Plugin {
 
             //Initialise AWARE instance in plugin
             Aware.startAWARE(this);
-
-            /** MUSE **/
-            // @todo stopListening before?
-            manager.startListening();
         }
 
         return START_STICKY;
+    }
+
+    // start/stop record with autoconnnect to first available muse
+    public void startRecording() {
+        manager.startListening();
+    }
+    public void stopRecording() {
+        manager.stopListening();
+    }
+    // start/stop record without autoconnnect
+    public void startRecording(Muse muse) {
+        muse.registerDataListener(dataListener, MuseDataPacketType.EEG);
+    }
+    public void stopRecording(Muse muse) {
+        muse.unregisterDataListener(dataListener, MuseDataPacketType.EEG);
     }
 
     @Override
