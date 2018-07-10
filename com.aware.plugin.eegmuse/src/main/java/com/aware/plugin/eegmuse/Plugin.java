@@ -32,7 +32,7 @@ public class Plugin extends Aware_Plugin {
      * the same process as its clients, we don't need to deal with IPC.
      */
     public class LocalBinder extends Binder {
-        Plugin getService() {
+        public Plugin getService() {
             // Return this instance of Plugin so clients can call public methods
             return Plugin.this;
         }
@@ -70,7 +70,6 @@ public class Plugin extends Aware_Plugin {
      * that extends MuseConnectionListener.
      */
     private ConnectionListener connectionListener;
-    private DataListener dataListener;
 
     /**
      * The DataListener is how you will receive EEG (and other) data from the
@@ -79,7 +78,7 @@ public class Plugin extends Aware_Plugin {
      * Note that DataListener is an inner class at the bottom of this file
      * that extends MuseDataListener.
      */
-    // private DataListener dataListener;
+    private DataListener dataListener;
 
     @Override
     public void onCreate() {
