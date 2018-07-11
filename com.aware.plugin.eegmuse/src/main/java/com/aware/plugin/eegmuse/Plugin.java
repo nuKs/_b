@@ -254,7 +254,7 @@ public class Plugin extends Aware_Plugin {
             // manager.stopListening();
 
             // Retrieve the first muse available
-            Muse m = list.get(0);
+            final Muse m = list.get(0);
 
             // Log
             Log.i(TAG, "muse found:" + m.getName() + " - " + m.getMacAddress());
@@ -273,7 +273,17 @@ public class Plugin extends Aware_Plugin {
             // m.registerDataListener(dataListener, MuseDataPacketType.QUANTIZATION);
 
             // Connect
-            m.runAsynchronously();
+            // m.runAsynchronously();
+            new Thread(new Runnable() {
+                public void run() {
+                    m.connect();
+                    while (true) {
+                        m.execute();
+                    }
+                    // @todo stop on disconnect event
+                    // @todo thread safety
+                }
+            }).start();
         }
     }
 
@@ -323,7 +333,6 @@ public class Plugin extends Aware_Plugin {
     private void receiveMuseDataPacket(MuseDataPacket p, Muse muse) {
         String deviceId = Aware.getSetting(this, Aware_Preferences.DEVICE_ID);
 
-        /*
 
         ContentValues context_data = new ContentValues();
         context_data.put(Provider.EEGMuse_Data.TIMESTAMP, p.timestamp());
@@ -341,7 +350,6 @@ public class Plugin extends Aware_Plugin {
             if (Aware.DEBUG) Log.d(TAG, e.getMessage());
         }
 
-        */
         // if (awareSensor != null) awareSensor.onSmartTagChanged(context_data);
     }
 }
