@@ -278,7 +278,10 @@ public class Plugin extends Aware_Plugin {
                 public void run() {
                     m.connect();
                     while (true) {
+                        // This should be called relatively frequently: max 250ms, ideally 20ms.
+                        // cf. docs
                         m.execute();
+                        SystemClock.sleep(100);
                     }
                     // @todo stop on disconnect event
                     // @todo thread safety
