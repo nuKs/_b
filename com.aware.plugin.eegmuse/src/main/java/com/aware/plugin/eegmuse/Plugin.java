@@ -323,6 +323,8 @@ public class Plugin extends Aware_Plugin {
     private void receiveMuseDataPacket(MuseDataPacket p, Muse muse) {
         String deviceId = Aware.getSetting(this, Aware_Preferences.DEVICE_ID);
 
+        /*
+
         ContentValues context_data = new ContentValues();
         context_data.put(Provider.EEGMuse_Data.TIMESTAMP, p.timestamp());
         context_data.put(Provider.EEGMuse_Data.DEVICE_ID, deviceId);
@@ -338,6 +340,8 @@ public class Plugin extends Aware_Plugin {
         } catch (SQLException e) {
             if (Aware.DEBUG) Log.d(TAG, e.getMessage());
         }
+
+        */
         // if (awareSensor != null) awareSensor.onSmartTagChanged(context_data);
     }
 }
