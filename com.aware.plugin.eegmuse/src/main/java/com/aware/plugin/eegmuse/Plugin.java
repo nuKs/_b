@@ -8,18 +8,18 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 
-import com.aware.Accelerometer;
+// import com.aware.Accelerometer;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
-import com.aware.Screen;
+// import com.aware.Screen;
 import com.aware.utils.Aware_Plugin;
 import com.choosemuse.libmuse.*;
 
-import android.os.SystemClock;
+// import android.os.SystemClock;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
+// import java.util.List;
 import android.os.Binder;
 import android.os.IBinder;
 
