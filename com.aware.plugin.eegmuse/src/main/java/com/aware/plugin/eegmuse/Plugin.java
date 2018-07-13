@@ -138,13 +138,13 @@ public class Plugin extends Aware_Plugin {
         WeakReference<Plugin> weakPlugin = new WeakReference<Plugin>(this);
 
         // Register a listener to receive connection state changes.
-        connectionListener = new ConnectionListener(weakPlugin);
+        // connectionListener = new ConnectionListener(weakPlugin);
         // Register a listener to receive data from a Muse.
         dataListener = new DataListener(weakPlugin);
 
         // Register a listener to receive notifications of what Muse headbands
         // we can connect to.
-        manager.setMuseListener(new MuseL(weakPlugin));
+        // manager.setMuseListener(new MuseL(weakPlugin));
     }
 
 
@@ -196,12 +196,14 @@ public class Plugin extends Aware_Plugin {
     }
 
     // start/stop record with autoconnnect to first available muse
+    /*
     public void startRecording() {
         manager.startListening();
     }
     public void stopRecording() {
         manager.stopListening();
     }
+    */
     // start/stop record without autoconnnect
     public void startRecording(Muse muse) {
         muse.registerDataListener(dataListener, MuseDataPacketType.EEG);
@@ -234,6 +236,7 @@ public class Plugin extends Aware_Plugin {
     //
     // Each of these classes extend from the appropriate listener and contain a weak reference
     // to the activity.  Each class simply forwards the messages it receives back to the Activity.
+    /*
     class MuseL extends MuseListener {
         final WeakReference<Plugin> activityRef;
 
@@ -312,6 +315,7 @@ public class Plugin extends Aware_Plugin {
         final String status = p.getPreviousConnectionState() + " -> " + current;
         Log.i(TAG, status);
     }
+    */
 
     class DataListener extends MuseDataListener {
         final WeakReference<Plugin> activityRef;
