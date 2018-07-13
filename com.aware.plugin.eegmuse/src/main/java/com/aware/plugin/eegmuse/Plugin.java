@@ -60,7 +60,7 @@ public class Plugin extends Aware_Plugin {
      * headband, register listeners to receive EEG data and get headband
      * configuration and version information.
      */
-    private Muse muse;
+    // private Muse muse;
 
     /**
      * The ConnectionListener will be notified whenever there is a change in
@@ -70,7 +70,7 @@ public class Plugin extends Aware_Plugin {
      * Note that ConnectionListener is an inner class at the bottom of this file
      * that extends MuseConnectionListener.
      */
-    private ConnectionListener connectionListener;
+    // private ConnectionListener connectionListener;
 
     /**
      * The DataListener is how you will receive EEG (and other) data from the
