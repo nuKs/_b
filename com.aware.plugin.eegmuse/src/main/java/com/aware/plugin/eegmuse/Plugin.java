@@ -347,7 +347,7 @@ public class Plugin extends Aware_Plugin {
         context_data.put(Provider.EEGMuse_Data.DEVICE_ID, deviceId);
         context_data.put(Provider.EEGMuse_Data.EEG1, p.getEegChannelValue(Eeg.EEG1));
         context_data.put(Provider.EEGMuse_Data.EEG2, p.getEegChannelValue(Eeg.EEG2));
-        context_data.put(Provider.EEGMuse_Data.EEG3, p.getEegChannelValue(Eeg.EEG3));
+        context_data.put(o.EEGMuse_Data.EEG3, p.getEegChannelValue(Eeg.EEG3));
         context_data.put(Provider.EEGMuse_Data.EEG4, p.getEegChannelValue(Eeg.EEG4));
 
         try {
