@@ -1,6 +1,5 @@
 package com.aware.plugin.bimsquestionnaire;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -8,19 +7,19 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 
-// import com.aware.Accelerometer;
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
-// import com.aware.Screen;
 import com.aware.utils.Aware_Plugin;
 
 // import android.os.SystemClock;
 import android.util.Log;
 
-import java.lang.ref.WeakReference;
-// import java.util.List;
 import android.os.Binder;
 import android.os.IBinder;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Plugin extends Aware_Plugin {
 
@@ -43,16 +42,9 @@ public class Plugin extends Aware_Plugin {
         return mBinder;
     }
 
-    /**
-     * Tag used for logging purposes.
-     */
-    //private final String TAG = "TestLibMuseAndroid";
-
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Log.i(TAG, "HHELLO Muse?");
 
         //This allows plugin data to be synced on demand from broadcast Aware#ACTION_AWARE_SYNC_DATA
         AUTHORITY = Provider.getAuthority(this);
@@ -72,19 +64,12 @@ public class Plugin extends Aware_Plugin {
         };
 
         /*
-        @note not working ?
+        // @note not working ?
         //To sync data to the server, you'll need to set this variables from your ContentProvider
         DATABASE_TABLES = Provider.DATABASE_TABLES;
         TABLES_FIELDS = Provider.TABLES_FIELDS;
-        CONTEXT_URIS = new Uri[]{ Provider.Example_Data.CONTENT_URI };
+        CONTEXT_URIS = new Uri[]{ Provider.bimsquestionnaire_Data.CONTENT_URI };
         */
-
-        //Add permissions you need (Android M+).
-        //By default, AWARE asks access to the #Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-        //REQUIRED_PERMISSIONS.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        WeakReference<Plugin> weakPlugin = new WeakReference<Plugin>(this);
     }
 
 
@@ -135,10 +120,30 @@ public class Plugin extends Aware_Plugin {
         return START_STICKY;
     }
 
-    // start/stop record without autoconnnect
-    public void startRecording() {
-    }
-    public void stopRecording() {
+    public void storeQuestionnaire(String questionnaireId, Map<String, Double> content) {
+        String deviceId = Aware.getSetting(this, Aware_Preferences.DEVICE_ID);
+        long timestamp = System.currentTimeMillis();
+
+        Set<ContentValues> context_datas = new HashSet<ContentValues>(content.size());
+        for (Map.Entry<String, Double> entry : content.entrySet()) {
+            ContentValues context_data = new ContentValues();
+            context_data.put(Provider.bimsquestionnaire_Data.TIMESTAMP, timestamp);
+            context_data.put(Provider.bimsquestionnaire_Data.DEVICE_ID, deviceId);
+            context_data.put(Provider.bimsquestionnaire_Data.QUESTIONNAIRE_ID, questionnaireId);
+            context_data.put(Provider.bimsquestionnaire_Data.QUESTION_ID, entry.getKey());
+            context_data.put(Provider.bimsquestionnaire_Data.VALUE, entry.getValue());
+            context_datas.add(context_data);
+            Log.i(TAG, String.format("Storing questionnaire %s data %s=%s", questionnaireId, entry.getKey(), entry.getValue()));
+        }
+
+        try {
+            getApplicationContext().getContentResolver().bulkInsert(Provider.bimsquestionnaire_Data.CONTENT_URI, (ContentValues[]) context_datas.toArray());
+        } catch (SQLiteException e) {
+            if (Aware.DEBUG) Log.d(TAG, e.getMessage());
+        } catch (SQLException e) {
+            if (Aware.DEBUG) Log.d(TAG, e.getMessage());
+        }
+
     }
 
     @Override

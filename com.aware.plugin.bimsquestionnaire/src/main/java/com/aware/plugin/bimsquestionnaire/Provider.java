@@ -33,8 +33,8 @@ public class Provider extends ContentProvider {
     public static final String DB_TBL_TEMPLATE = "bimsquestionnaire";
 
     //For each table, add two indexes: DIR and ITEM. The index needs to always increment. Next one is 3, and so on.
-    private static final int EEG_MUSE_DIR = 1;
-    private static final int EEG_MUSE_ITEM = 2;
+    private static final int BIMSQUESTIONNAIRE_DIR = 1;
+    private static final int BIMSQUESTIONNAIRE_ITEM = 2;
 
     //Put tables names in this array so AWARE knows what you have on the database
     public static final String[] DATABASE_TABLES = {
@@ -59,10 +59,9 @@ public class Provider extends ContentProvider {
 
         //Note: integers and strings don't need a type prefix_
         // public static final String NAME = "name";
-        public static final String EEG1 = "double_eeg1"; //a double_ prefix makes a MySQL DOUBLE column
-        public static final String EEG2 = "double_eeg2"; //a double_ prefix makes a MySQL DOUBLE column
-        public static final String EEG3 = "double_eeg3"; //a double_ prefix makes a MySQL DOUBLE column
-        public static final String EEG4 = "double_eeg4"; //a double_ prefix makes a MySQL DOUBLE column
+        public static final String QUESTIONNAIRE_ID = "questionnaire_id";
+        public static final String QUESTION_ID = "question_id";
+        public static final String VALUE = "double_value"; //a double_ prefix makes a MySQL DOUBLE column
         //public static final String PICTURE = "blob_picture"; //a blob_ prefix makes a MySQL BLOB column
     }
 
@@ -72,10 +71,9 @@ public class Provider extends ContentProvider {
         bimsquestionnaire_Data.TIMESTAMP + " integer default 0," + // 8bit -- @warning may causes issue on update
         bimsquestionnaire_Data.DEVICE_ID + " text default ''," +
         // bimsquestionnaire_Data.NAME + " text default ''," +
-        bimsquestionnaire_Data.EEG1 + " real default 0," +
-        bimsquestionnaire_Data.EEG2 + " real default 0," +
-        bimsquestionnaire_Data.EEG3 + " real default 0," +
-        bimsquestionnaire_Data.EEG4 + " real default 0";
+        bimsquestionnaire_Data.QUESTIONNAIRE_ID + " text default 0," +
+        bimsquestionnaire_Data.QUESTION_ID + " text default 0," +
+        bimsquestionnaire_Data.VALUE + " real default null" ;
         // bimsquestionnaire_Data.PICTURE + " blob default null";
 
     /**
@@ -117,20 +115,17 @@ public class Provider extends ContentProvider {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         //For each table, add indexes DIR and ITEM
-        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0], EEG_MUSE_DIR);
-        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0] + "/#", EEG_MUSE_ITEM);
+        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0], BIMSQUESTIONNAIRE_DIR);
+        sUriMatcher.addURI(AUTHORITY, DATABASE_TABLES[0] + "/#", BIMSQUESTIONNAIRE_ITEM);
 
         //Create each table hashmap so Android knows how to insert data to the database. Put ALL table fields.
         bimsquestionnaireHash = new HashMap<>();
         bimsquestionnaireHash.put(bimsquestionnaire_Data._ID, bimsquestionnaire_Data._ID);
         bimsquestionnaireHash.put(bimsquestionnaire_Data.TIMESTAMP, bimsquestionnaire_Data.TIMESTAMP);
         bimsquestionnaireHash.put(bimsquestionnaire_Data.DEVICE_ID, bimsquestionnaire_Data.DEVICE_ID);
-        //bimsquestionnaireHash.put(bimsquestionnaire_Data.NAME, bimsquestionnaire_Data.NAME);
-        bimsquestionnaireHash.put(bimsquestionnaire_Data.EEG1, bimsquestionnaire_Data.EEG1);
-        bimsquestionnaireHash.put(bimsquestionnaire_Data.EEG2, bimsquestionnaire_Data.EEG2);
-        bimsquestionnaireHash.put(bimsquestionnaire_Data.EEG3, bimsquestionnaire_Data.EEG3);
-        bimsquestionnaireHash.put(bimsquestionnaire_Data.EEG4, bimsquestionnaire_Data.EEG4);
-        //bimsquestionnaireHash.put(bimsquestionnaire_Data.PICTURE, bimsquestionnaire_Data.PICTURE);
+        bimsquestionnaireHash.put(bimsquestionnaire_Data.QUESTIONNAIRE_ID, bimsquestionnaire_Data.QUESTIONNAIRE_ID);
+        bimsquestionnaireHash.put(bimsquestionnaire_Data.QUESTION_ID, bimsquestionnaire_Data.QUESTION_ID);
+        bimsquestionnaireHash.put(bimsquestionnaire_Data.VALUE, bimsquestionnaire_Data.VALUE);
 
         return true;
     }
@@ -145,7 +140,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table DIR case, increasing the index accordingly
-            case EEG_MUSE_DIR:
+            case BIMSQUESTIONNAIRE_DIR:
                 count = database.delete(DATABASE_TABLES[0], selection, selectionArgs);
                 break;
 
@@ -174,7 +169,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table DIR case
-            case EEG_MUSE_DIR:
+            case BIMSQUESTIONNAIRE_DIR:
                 long _id = database.insert(DATABASE_TABLES[0], bimsquestionnaire_Data.DEVICE_ID, values);
                 database.setTransactionSuccessful();
                 database.endTransaction();
@@ -201,7 +196,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add all tables' DIR entries, with the right table index
-            case EEG_MUSE_DIR:
+            case BIMSQUESTIONNAIRE_DIR:
                 qb.setTables(DATABASE_TABLES[0]);
                 qb.setProjectionMap(bimsquestionnaireHash); //the hashmap of the table
                 break;
@@ -229,9 +224,9 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table indexes DIR and ITEM
-            case EEG_MUSE_DIR:
+            case BIMSQUESTIONNAIRE_DIR:
                 return bimsquestionnaire_Data.CONTENT_TYPE;
-            case EEG_MUSE_ITEM:
+            case BIMSQUESTIONNAIRE_ITEM:
                 return bimsquestionnaire_Data.CONTENT_ITEM_TYPE;
 
             default:
@@ -250,7 +245,7 @@ public class Provider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             //Add each table DIR case
-            case EEG_MUSE_DIR:
+            case BIMSQUESTIONNAIRE_DIR:
                 count = database.update(DATABASE_TABLES[0], values, selection, selectionArgs);
                 break;
 
