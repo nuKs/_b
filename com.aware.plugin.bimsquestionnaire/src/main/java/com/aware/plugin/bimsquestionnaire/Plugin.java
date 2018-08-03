@@ -137,13 +137,12 @@ public class Plugin extends Aware_Plugin {
         }
 
         try {
-            getApplicationContext().getContentResolver().bulkInsert(Provider.bimsquestionnaire_Data.CONTENT_URI, (ContentValues[]) context_datas.toArray());
+            getApplicationContext().getContentResolver().bulkInsert(Provider.bimsquestionnaire_Data.CONTENT_URI, context_datas.toArray(new ContentValues[context_datas.size()]));
         } catch (SQLiteException e) {
             if (Aware.DEBUG) Log.d(TAG, e.getMessage());
         } catch (SQLException e) {
             if (Aware.DEBUG) Log.d(TAG, e.getMessage());
         }
-
     }
 
     @Override
