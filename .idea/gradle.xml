@@ -8,8 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/com.aware.plugin.eegmuse" />
-            <option value="$PROJECT_DIR$/com.aware.plugin.eegmuse.lib" />
+            <option value="$PROJECT_DIR$/com.aware.plugin.bimsquestionnaire" />
+            <option value="$PROJECT_DIR$/com.aware.plugin.bimsquestionnaire.lib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

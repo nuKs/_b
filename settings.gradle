@@ -1,1 +1,1 @@
-include ':com.aware.plugin.eegmuse', ':com.aware.plugin.eegmuse.lib'
+include ':com.aware.plugin.bimsquestionnaire', ':com.aware.plugin.bimsquestionnaire.lib'

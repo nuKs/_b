@@ -14,10 +14,11 @@ Broadcast ..., with the following extras:
 
 # Providers
 ##  Template Data
-> content://com.aware.plugin.eegmuse.provider.xxx/plugin_template
+> content://com.aware.plugin.bimsquestionnaire.provider.xxx/plugin_template
 
 Field | Type | Description
 ----- | ---- | -----------
 _id | INTEGER | primary key auto-incremented
 timestamp | REAL | unix timestamp in milliseconds of sample
 device_id | TEXT | AWARE device ID
+xq
